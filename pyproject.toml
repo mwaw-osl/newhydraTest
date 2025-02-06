@@ -1,0 +1,25 @@
+[project]
+name = "newhydra"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Your Name",email = "you@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+"astropy",
+"astroquery",
+"pillow",
+"pyqt6",
+"platformdirs",
+"shapely"]
+
+[project.scripts]
+NeWHydra = "newhydra.main:main"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+
