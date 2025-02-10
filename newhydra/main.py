@@ -1,6 +1,6 @@
 import sys,os
 try:
-    importlib_resources
+    import importlib_resources
 except ImportError:
     from importlib import resources as importlib_resources
 
