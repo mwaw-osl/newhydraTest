@@ -13,7 +13,7 @@ class FiberInitializer:
             result = None
         if result:
             # If we have successfully retrieved the file, update the cache
-            confile = result.text.read()
+            confile = result.text
             ofile = open(self.cachedir+"/hydraConcentricities.json",'w')
             ofile.write(confile)
             ofile.close()
