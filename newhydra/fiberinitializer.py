@@ -32,9 +32,9 @@ class FiberInitializer:
             # If that wasn't successful look in install directory
             if not confile:
                 try:
-                    from importlib.resources import files
-                except ImportError:
                     from importlib_resources import files
+                except ImportError:
+                    from importlib.resources import files
                 cfile = files("newhydra").joinpath("data/hydraConcentricities.json")
                 try:
                     confile = cfile.read_text()

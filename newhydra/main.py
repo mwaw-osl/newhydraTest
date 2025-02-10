@@ -1,8 +1,8 @@
 import sys,os
 try:
-    from importlib import resources as importlib_resources
+    importlib_resources
 except ImportError:
-    import importlib_resources
+    from importlib import resources as importlib_resources
 
 
 from PyQt6.QtWidgets import (
