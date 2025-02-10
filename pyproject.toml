@@ -13,7 +13,8 @@ dependencies = [
 "pillow",
 "pyqt6",
 "platformdirs",
-"shapely"]
+"shapely",
+"importlib_resources; python_version<='3.9'"]
 
 [project.scripts]
 NeWHydra = "newhydra.main:main"

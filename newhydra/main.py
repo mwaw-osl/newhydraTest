@@ -1,5 +1,9 @@
 import sys,os
-from importlib.resources import files
+try:
+    from importlib import resources as importlib_resources
+except ImportError:
+    import importlib_resources
+
 
 from PyQt6.QtWidgets import (
     QApplication, QDialog, QMainWindow, QMessageBox, QTableWidgetItem,
@@ -71,7 +75,7 @@ class Window(QMainWindow, Ui_MainWindow,CatalogManager,UpdateHandler,FiberInitia
         self.targetSignal.connect(self.updateFieldInfo)
         self.imageSignal.connect(self.setImageDirect)
 
-        configFileData = files('newhydra').joinpath('data/hydraConfig.json')
+        configFileData = importlib_resources.files('newhydra').joinpath('data/hydraConfig.json')
         self.HydraConfig = eval(configFileData.read_text())
         self.sitePars = self.HydraConfig["WIYN"]
         self.setButtons()
