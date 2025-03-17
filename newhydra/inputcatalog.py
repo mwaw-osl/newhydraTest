@@ -287,6 +287,9 @@ class CatalogManager:
                 x,y = xc,yc
             else:
                 x,y = xs,ys
+            if x*x+y*y>self.HydraConfig["PLATE"]**2:
+                self.printError("Object is not on the plate (x={},y={}): {}".format(x,y,line))
+                continue
             catalog[objid] = {"name":name,
                               "mag":mag,
                               "RADeg":ra,
