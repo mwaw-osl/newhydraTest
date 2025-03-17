@@ -184,17 +184,26 @@ class CollisionMatrix:
 
     def addCatalogObject(self,optID,objid,obj):
         #objid,obj = data
-        self.idmap.append(objid)
+        #self.idmap.append(objid)
         x = obj["x"]
         y = obj["y"]
         angle = atan2(y,x)
         if angle<0:
             angle += 2*pi
-        #originDistance = sqrt(x*x+y*y)
+
+        originDistance = sqrt(x*x+y*y)
+        passThru = False
+        if originDistance>self.HydraConfig["PLATE"]:
+            self.printError("Object {} (objid={}) is not on the plate (x={},y={})".format(obj["name"],objid,x,y))
+            passThru = True
+        self.idmap.append(objid)
         self.weights.append(obj["weight"])
         geometries = []
         button = shapely.Polygon([(bx+x,by+y) for bx,by in zip(self.buttonX,self.buttonY)])
         for fibIndex,fibid in enumerate(self.fibers):
+            if passThru:
+                geometries.append(None)
+                continue
             if obj["type"]=='F' or self.FiberDB[str(fibid)]["cable"]=='F':
                 if obj["type"]!=self.FiberDB[str(fibid)]["cable"]:
                     geometries.append(None)
