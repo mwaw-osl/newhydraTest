@@ -183,13 +183,8 @@ class CollisionMatrix:
         return geo
 
     def addCatalogObject(self,optID,objid,obj):
-        #objid,obj = data
-        #self.idmap.append(objid)
         x = obj["x"]
         y = obj["y"]
-        angle = atan2(y,x)
-        if angle<0:
-            angle += 2*pi
 
         originDistance = sqrt(x*x+y*y)
         passThru = False
@@ -199,7 +194,6 @@ class CollisionMatrix:
         self.idmap.append(objid)
         self.weights.append(obj["weight"])
         geometries = []
-        button = shapely.Polygon([(bx+x,by+y) for bx,by in zip(self.buttonX,self.buttonY)])
         for fibIndex,fibid in enumerate(self.fibers):
             if passThru:
                 geometries.append(None)
@@ -208,7 +202,13 @@ class CollisionMatrix:
                 if obj["type"]!=self.FiberDB[str(fibid)]["cable"]:
                     geometries.append(None)
                     continue
-            geo = self.getFiber(fibid,(x,y,angle,button))
+            x0 = x+self.FiberDB[str(fibid)]["xcorr"]
+            y0 = y+self.FiberDB[str(fibid)]["ycorr"]
+            button = shapely.Polygon([(bx+x0,by+y0) for bx,by in zip(self.buttonX,self.buttonY)])
+            angle = atan2(y,x)
+            if angle<0:
+                angle += 2*pi
+            geo = self.getFiber(fibid,(x0,y0,angle,button))
             if geo is None:
                 geometries.append(None)
                 continue

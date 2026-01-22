@@ -624,7 +624,7 @@ class CatalogManager:
                     F.write("*")
                 else:
                     F.write(" ")
-                F.write(" # slit={:>2}".format(obj["slitid"]))
+                F.write(" # slit={:>2} x={:f} y={:f}".format(obj["slitid"],obj["x"],obj["y"]))
             F.write("\n")
         F.close()
 

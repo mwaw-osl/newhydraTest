@@ -84,6 +84,11 @@ class FiberInitializer:
             pivotX = self.HydraConfig["PIVOT"]*cangle
             pivotY = self.HydraConfig["PIVOT"]*sangle
 
+            concenMag = -2.5*fibData["radius"]/1000
+            concenAngle = angle+fibData["angle"]
+            xcorrection = concenMag*cos(concenAngle)
+            ycorrection = concenMag*sin(concenAngle)
+
             if cable=="F": slitid = -1
             FiberDB[fibID] = {"fiber":fiber,
                               "x":parkX,
@@ -102,7 +107,9 @@ class FiberInitializer:
                               "active":cable=="F" and status=="A",
                               "queued":False,
                               "parked":True,
-                              "stowed":False}
+                              "stowed":False,
+                              "xcorr":xcorrection,
+                              "ycorr":ycorrection,}
         self.FiberDB = FiberDB
 
     def processConcentricityFileOldFormat(self,confile):

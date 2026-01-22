@@ -146,6 +146,8 @@ class Button(QGraphicsEllipseItem):
         for obj in objs:
             if type(obj) not in [SquareMarker,CircleMarker,StarMarker]:
                 continue
+            if (self.fiber.cable=="F")==(type(obj)!=StarMarker):
+                continue
             tmp = obj.pos()-P
             D = tmp.x()**2+tmp.y()**2
             if D<dist:
