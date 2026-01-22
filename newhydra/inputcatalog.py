@@ -24,6 +24,13 @@ class CatalogManager:
     targetSignal = pyqtSignal(dict)
     imageSignal = pyqtSignal(object,float)
 
+    ID_LIMIT_REACHED = False
+
+    def warnIDLimitReached(self):
+        if not self.ID_LIMIT_REACHED:
+            self.printError("Warning! An object with ID=9999 exists in the catalog, NO NEW OBJECTS WILL BE ADDED. Consider re-assigning object IDs to values less than 9000; user-supplied identifiers can be part of the target name.")
+            self.ID_LIMIT_REACHED = True
+
     def setupTable(self):
         colHead = self.FiberTable.horizontalHeader()
         for i in range(5):
@@ -315,6 +322,7 @@ class CatalogManager:
         if len(catalog)==0:
             self.printError("No valid objects provided.")
             return
+        self.ID_LIMIT_REACHED = False
         catalog = self.addGaiaFOPs(header,catalog)
         self.previousAssignments = previousAssignments
         self.applyCatalog(header,catalog)
@@ -389,6 +397,10 @@ class CatalogManager:
                 continue
             if mag<Mlo or mag>Mhi:
                 continue
+            if objid>9999:
+                self.warnIDLimitReached()
+                self.printError("No additional FOPS stars will be added.")
+                break
             cosDec = cos(dec*pi/180)
             ra += (pmra/cosDec)*correction
             dec += pmdec*correction
@@ -556,6 +568,10 @@ class CatalogManager:
             for oid in self.catalog:
                 if oid>=objid:
                     objid = oid+1
+        if objid>9999:
+            self.warnIDLimitReached()
+            self.printError("Sky location was not added.")
+            return
         self.catalog[objid] = {"name":"PS1 sky",
                               "mag":'99.00',
                               "RADeg":ra,
